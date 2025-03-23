@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.leaflet-container {
+    position: relative;
+    z-index: 1;
+  }
+  

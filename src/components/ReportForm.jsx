@@ -190,7 +190,7 @@ export default function ReportForm() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -233,7 +233,7 @@ export default function ReportForm() {
           className="space-y-4"
         >
           <label className="block text-xl font-medium text-gray-700">Location</label>
-          <div className="h-[400px] rounded-xl overflow-hidden shadow-lg">
+          <div className="h-[400px]  rounded-xl overflow-hidden shadow-lg">
             <MapContainer
               center={[51.505, -0.09]}
               zoom={13}
@@ -244,7 +244,7 @@ export default function ReportForm() {
               <AutoLocate setPosition={setPosition} />
             </MapContainer>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center ">
             <p className="text-sm text-gray-500">
               {position ? 'Location selected' : 'Click on the map to select location'}
             </p>

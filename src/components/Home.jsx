@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Heart, Phone, Mail, MapPin, PawPrint, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const FadeInSection = ({ children }) => {
   const [ref, inView] = useInView({
@@ -25,13 +26,13 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <motion.section 
+      <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         className="relative h-screen flex items-center justify-center text-white"
       >
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{
             backgroundImage: 'url("https://images.unsplash.com/photo-1548681528-6a5c45b66b42?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80")',
@@ -39,7 +40,7 @@ export default function Home() {
         >
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         </div>
-        
+
         <div className="relative z-10 text-center px-4">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -48,14 +49,15 @@ export default function Home() {
           >
             <h1 className="text-5xl md:text-7xl font-bold mb-6">Saving Lives, One Paw at a Time</h1>
             <p className="text-xl md:text-2xl mb-8">Join us in making a difference for animals in need</p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-black px-8 py-3 rounded-full text-lg font-semibold hover:bg-opacity-90 transition-colors"
-              onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}
-            >
-              Learn More
-            </motion.button>
+            <Link to={"/report"}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white text-black px-8 py-3 rounded-full text-lg font-semibold hover:text-white hover:bg-black hover:bg-opacity-90 transition-colors"
+              >
+                Save Animal
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
       </motion.section>
@@ -132,7 +134,7 @@ export default function Home() {
           <FadeInSection>
             <h2 className="text-4xl font-bold text-center mb-12">Success Stories</h2>
           </FadeInSection>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <FadeInSection>
               <img
@@ -165,7 +167,7 @@ export default function Home() {
           <FadeInSection>
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl font-bold text-center mb-12">Contact Us</h2>
-              
+
               <div className="grid md:grid-cols-2 gap-12">
                 <div>
                   <h3 className="text-2xl font-semibold mb-6">Get in Touch</h3>

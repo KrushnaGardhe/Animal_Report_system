@@ -182,7 +182,7 @@ export default function NGODashboard() {
                     </div>
 
                     {/* Map */}
-                    <div className="h-48 rounded-lg overflow-hidden shadow-md">
+                    <div className="h-48 rounded-lg  overflow-hidden shadow-md">
                       <MapContainer
                         center={[report.latitude, report.longitude]}
                         zoom={13}

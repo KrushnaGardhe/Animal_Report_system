@@ -7,6 +7,7 @@ import NGORegister from './components/NGORegister';
 import NGODashboard from './components/NGODashboard';
 import Home from './components/Home';
 import { supabase } from './lib/supabase';
+import { div } from 'framer-motion/client';
 
 function Navbar() {
   const location = useLocation();
@@ -36,10 +37,10 @@ function Navbar() {
         navigate('/ngo/login');
         return;
       }
-      
+
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      
+
       navigate('/ngo/login');
     } catch (error) {
       console.error('Error signing out:', error);
@@ -47,26 +48,34 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-sm fixed w-full z-50">
+    <nav className="bg-white shadow-sm  fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex">
-            <Link to="/" className="flex items-center">
-              <PawPrint className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">Animal Rescue</span>
-            </Link>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Link to="/report" className="text-gray-600 hover:text-gray-900">Report Case</Link>
-            {isDashboard ? (
+          {isDashboard ? (
+            <div className='flex w-[2900px] items-center justify-between '>
+              <div className="flex">
+                <Link className="flex items-center">
+                  <PawPrint className="h-8 w-8 text-indigo-600" />
+                  <span className="ml-2 text-xl font-bold text-gray-900">Animal Rescue</span>
+                </Link>
+              </div>
               <button
                 onClick={handleSignOut}
                 className="px-4 py-2 rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700"
               >
                 Sign Out
               </button>
-            ) : (
-              <>
+            </div>
+          ) : (
+            <>
+              <div className="flex">
+                <Link to="/" className="flex items-center">
+                  <PawPrint className="h-8 w-8 text-indigo-600" />
+                  <span className="ml-2 text-xl font-bold text-gray-900">Animal Rescue</span>
+                </Link>
+              </div>
+              <div className="flex items-center space-x-4">
+                
                 <Link
                   to="/ngo/register"
                   className="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
@@ -79,9 +88,9 @@ function Navbar() {
                 >
                   NGO Login
                 </Link>
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </nav>
