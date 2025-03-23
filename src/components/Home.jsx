@@ -114,8 +114,8 @@ export default function Home() {
               <h2 className="text-4xl font-bold text-center mb-12">See Our Impact</h2>
               <div className="aspect-w-16 aspect-h-9">
                <iframe
-                  className="w-full h-[500px] rounded-xl shadow-lg" 
-                  src="https://www.youtube.com/embed/i_ctItDqOvQ?si=mPODJ-8qHlh9gbjw" 
+                  className="w-full h-[500px] rounded-xl shadow-lg"
+                  src="https://www.youtube.com/embed/i_ctItDqOvQ?si=mPODJ-8qHlh9gbjw"
                   title="Animal Rescue Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
