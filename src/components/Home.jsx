@@ -115,7 +115,7 @@ export default function Home() {
               <div className="aspect-w-16 aspect-h-9">
                 <iframe
                   className="w-full h-[500px] rounded-xl shadow-lg"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  src="https://youtu.be/i_ctItDqOvQ?si=VDjofUiDhk6wnCS8"
                   title="Animal Rescue Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
