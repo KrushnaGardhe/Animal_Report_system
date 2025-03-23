@@ -6,9 +6,10 @@ import { supabase } from '../lib/supabase';
 import 'leaflet/dist/leaflet.css';
 import { CheckCircle, XCircle, MapPin } from 'lucide-react';
 
+// ✅ Fix: Use absolute URLs for marker icons (Vercel-friendly)
 const customIcon = new L.Icon({
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -31,7 +32,7 @@ export default function NGODashboard() {
       if (!session) navigate('/ngo/login');
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe?.();
   }, [navigate]);
 
   const checkAuth = async () => {
@@ -97,18 +98,32 @@ export default function NGODashboard() {
               <p className="text-gray-700">{report.description}</p>
               <div className="flex items-center text-gray-600">
                 <MapPin className="h-5 w-5 mr-2" />
-                <span>Location: {report.latitude.toFixed(6)}, {report.longitude.toFixed(6)}</span>
+                <span>
+                  Location: 
+                  {report.latitude && report.longitude
+                    ? `${report.latitude.toFixed(6)}, ${report.longitude.toFixed(6)}`
+                    : 'Unknown'}
+                </span>
               </div>
-              <MapContainer center={[report.latitude, report.longitude]} zoom={13} style={{ height: '200px' }}>
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Marker position={[report.latitude, report.longitude]} icon={customIcon}>
-                  <Popup>{report.description}</Popup>
-                </Marker>
-              </MapContainer>
+              
+              {/* ✅ Fix: Only render map if location exists */}
+              {report.latitude && report.longitude && typeof window !== 'undefined' && (
+                <MapContainer center={[report.latitude, report.longitude]} zoom={13} style={{ height: '200px' }}>
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={[report.latitude, report.longitude]} icon={customIcon}>
+                    <Popup>{report.description}</Popup>
+                  </Marker>
+                </MapContainer>
+              )}
+
               {report.status === 'pending' && (
                 <div className="flex gap-4 mt-4">
-                  <button onClick={() => updateReportStatus(report.id, 'accepted')} className="bg-green-600 text-white px-4 py-2 rounded">Accept</button>
-                  <button onClick={() => updateReportStatus(report.id, 'declined')} className="bg-red-600 text-white px-4 py-2 rounded">Decline</button>
+                  <button onClick={() => updateReportStatus(report.id, 'accepted')} className="bg-green-600 text-white px-4 py-2 rounded flex items-center">
+                    <CheckCircle className="h-5 w-5 mr-2" /> Accept
+                  </button>
+                  <button onClick={() => updateReportStatus(report.id, 'declined')} className="bg-red-600 text-white px-4 py-2 rounded flex items-center">
+                    <XCircle className="h-5 w-5 mr-2" /> Decline
+                  </button>
                 </div>
               )}
             </div>
