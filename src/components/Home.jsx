@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Heart, Phone, Mail, MapPin, PawPrint, Instagram, Facebook, Twitter } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import hellowVideo from '../fetch/hellow.mp4';
 
 const FadeInSection = ({ children }) => {
   const [ref, inView] = useInView({
@@ -32,14 +33,20 @@ export default function Home() {
         transition={{ duration: 1 }}
         className="relative h-screen flex items-center justify-center text-white"
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center z-0"
-          style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1548681528-6a5c45b66b42?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80")',
-          }}
-        >
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={hellowVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         </div>
+
 
         <div className="relative z-10 text-center px-4">
           <motion.div
@@ -115,7 +122,7 @@ export default function Home() {
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl font-bold text-center mb-12">See Our Impact</h2>
               <div className="aspect-w-16 aspect-h-9">
-               <iframe
+                <iframe
                   className="w-full h-[500px] rounded-xl shadow-lg"
                   src="https://www.youtube.com/embed/i_ctItDqOvQ?si=mPODJ-8qHlh9gbjw"
                   title="Animal Rescue Video"
