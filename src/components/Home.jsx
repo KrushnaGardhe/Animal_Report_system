@@ -113,13 +113,14 @@ export default function Home() {
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl font-bold text-center mb-12">See Our Impact</h2>
               <div className="aspect-w-16 aspect-h-9">
-                <iframe
-                  className="w-full h-[500px] rounded-xl shadow-lg"
-                  src="https://youtu.be/i_ctItDqOvQ?si=VDjofUiDhk6wnCS8"
-                  title="Animal Rescue Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+                <iframe width="560" height="315" 
+                  src="https://www.youtube.com/embed/i_ctItDqOvQ?si=mPODJ-8qHlh9gbjw" 
+                  title="YouTube video player" 
+                  frameborder="0" allow="accelerometer; 
+                  autoplay; clipboard-write; encrypted-media; 
+                  gyroscope; picture-in-picture; web-share" 
+                  referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen></iframe>
               </div>
             </div>
           </FadeInSection>
