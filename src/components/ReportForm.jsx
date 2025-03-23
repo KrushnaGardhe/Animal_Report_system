@@ -4,6 +4,19 @@ import 'leaflet/dist/leaflet.css';
 import { Camera, RefreshCw, MapPin, AlertCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
+import L from 'leaflet';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// Fix for Leaflet marker issue in production (Vercel)
+const customIcon = new L.Icon({
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 function LocationMarker({ position, setPosition }) {
   const map = useMap();
@@ -20,8 +33,27 @@ function LocationMarker({ position, setPosition }) {
     }
   }, [position, map]);
 
-  return position ? <Marker position={position} /> : null;
+  return position ? <Marker position={position} icon={customIcon} /> : null;
 }
+
+
+// function LocationMarker({ position, setPosition }) {
+//   const map = useMap();
+
+//   useMapEvents({
+//     click(e) {
+//       setPosition([e.latlng.lat, e.latlng.lng]);
+//     },
+//   });
+
+//   useEffect(() => {
+//     if (position) {
+//       map.setView(position, map.getZoom());
+//     }
+//   }, [position, map]);
+
+//   return position ? <Marker position={position} /> : null;
+// }
 
 function AutoLocate({ setPosition }) {
   const map = useMap();
