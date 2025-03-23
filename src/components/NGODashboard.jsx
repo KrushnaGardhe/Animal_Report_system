@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-import { supabase } from '../lib/supabase';
 import 'leaflet/dist/leaflet.css';
+import { supabase } from '../lib/supabase';
 import { CheckCircle, XCircle, MapPin } from 'lucide-react';
 
-// ✅ Fix: Use absolute URLs for marker icons (Vercel-friendly)
-const customIcon = new L.Icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+// ✅ Fix: Only import Leaflet when running in browser
+const L = typeof window !== 'undefined' ? require('leaflet') : null;
+
+// ✅ Fix: Use absolute URL for marker icon (works in Vercel)
+const customIcon = L
+  ? new L.Icon({
+      iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+      shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+    })
+  : null;
 
 export default function NGODashboard() {
   const [reports, setReports] = useState([]);
@@ -27,12 +31,12 @@ export default function NGODashboard() {
     checkAuth();
     fetchReports();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (!session) navigate('/ngo/login');
     });
 
-    return () => subscription?.unsubscribe?.();
+    return () => authListener?.subscription?.unsubscribe?.();
   }, [navigate]);
 
   const checkAuth = async () => {
@@ -65,7 +69,7 @@ export default function NGODashboard() {
       const { error: updateError } = await supabase.from('reports').update({
         status,
         ngo_id: session.user.id,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       }).eq('id', id);
       if (updateError) throw updateError;
       await fetchReports();
@@ -73,13 +77,6 @@ export default function NGODashboard() {
       console.error('Error updating report:', error);
       alert('Error updating report status. Please try again.');
     }
-  };
-
-  const getStatusBadgeColor = (status) => {
-    return status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-           status === 'accepted' ? 'bg-green-100 text-green-800' :
-           status === 'declined' ? 'bg-red-100 text-red-800' :
-           'bg-gray-100 text-gray-800';
   };
 
   if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
@@ -99,16 +96,16 @@ export default function NGODashboard() {
               <div className="flex items-center text-gray-600">
                 <MapPin className="h-5 w-5 mr-2" />
                 <span>
-                  Location: 
+                  Location:{" "}
                   {report.latitude && report.longitude
                     ? `${report.latitude.toFixed(6)}, ${report.longitude.toFixed(6)}`
-                    : 'Unknown'}
+                    : "Unknown"}
                 </span>
               </div>
-              
-              {/* ✅ Fix: Only render map if location exists */}
-              {report.latitude && report.longitude && typeof window !== 'undefined' && (
-                <MapContainer center={[report.latitude, report.longitude]} zoom={13} style={{ height: '200px' }}>
+
+              {/* ✅ Fix: Only render map if Leaflet and location data exist */}
+              {L && report.latitude && report.longitude && (
+                <MapContainer center={[report.latitude, report.longitude]} zoom={13} style={{ height: "200px" }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   <Marker position={[report.latitude, report.longitude]} icon={customIcon}>
                     <Popup>{report.description}</Popup>
@@ -116,12 +113,12 @@ export default function NGODashboard() {
                 </MapContainer>
               )}
 
-              {report.status === 'pending' && (
+              {report.status === "pending" && (
                 <div className="flex gap-4 mt-4">
-                  <button onClick={() => updateReportStatus(report.id, 'accepted')} className="bg-green-600 text-white px-4 py-2 rounded flex items-center">
+                  <button onClick={() => updateReportStatus(report.id, "accepted")} className="bg-green-600 text-white px-4 py-2 rounded flex items-center">
                     <CheckCircle className="h-5 w-5 mr-2" /> Accept
                   </button>
-                  <button onClick={() => updateReportStatus(report.id, 'declined')} className="bg-red-600 text-white px-4 py-2 rounded flex items-center">
+                  <button onClick={() => updateReportStatus(report.id, "declined")} className="bg-red-600 text-white px-4 py-2 rounded flex items-center">
                     <XCircle className="h-5 w-5 mr-2" /> Decline
                   </button>
                 </div>
