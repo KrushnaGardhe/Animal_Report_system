@@ -1,11 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Heart, Phone, Mail, MapPin, PawPrint, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Heart, Phone, Mail, MapPin, PawPrint, Instagram, Facebook, Twitter, ArrowRight, Shield, Users, Clock, ChevronDown, Star, Award, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import hellowVideo from '../fetch/hellow.mp4';
-
-const FadeInSection = ({ children }) => {
+import hellowVideo from '../fetch/hellow.mp4'
+const FadeInSection = ({ children, delay = 0 }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -16,22 +15,57 @@ const FadeInSection = ({ children }) => {
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.8, delay }}
     >
       {children}
     </motion.div>
   );
 };
 
+const StatCard = ({ icon: Icon, title, value }) => (
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    className="bg-white/90 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-gray-100"
+  >
+    <div className="flex items-center space-x-6">
+      <div className="p-4 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl shadow-inner">
+        <Icon className="w-8 h-8 text-white" />
+      </div>
+      <div>
+        <p className="text-5xl font-bold text-gray-900 mb-1">{value}</p>
+        <p className="text-gray-600 text-lg">{title}</p>
+      </div>
+    </div>
+  </motion.div>
+);
+
+const FeatureCard = ({ icon: Icon, title, description, delay }) => (
+  <FadeInSection delay={delay}>
+    <motion.div
+      whileHover={{ y: -8 }}
+      className="relative p-8 bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden group"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div className="relative z-10">
+        <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+          <Icon className="w-8 h-8 text-white" />
+        </div>
+        <h3 className="text-2xl font-semibold mb-4">{title}</h3>
+        <p className="text-gray-600 leading-relaxed">{description}</p>
+      </div>
+    </motion.div>
+  </FadeInSection>
+);
+
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <motion.section
+      <motion.section 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="relative h-screen flex items-center justify-center text-white"
+        className="relative min-h-screen flex items-center justify-center text-white overflow-hidden"
       >
         <div className="absolute inset-0 z-0">
           <video
@@ -46,176 +80,278 @@ export default function Home() {
           </video>
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         </div>
-
-
-        <div className="relative z-10 text-center px-4">
+        
+        <div className="relative z-10 text-center px-4 max-w-6xl mx-auto mt-[-5vh]">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            className="space-y-8"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">Saving Lives, One Paw at a Time</h1>
-            <p className="text-xl md:text-2xl mb-8">Join us in making a difference for animals in need</p>
-            <Link to={"/report"}>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white text-black px-8 py-3 rounded-full text-lg font-semibold hover:text-white hover:bg-black hover:bg-opacity-90 transition-colors"
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="flex justify-center mb-8"
+            >
+              <div className="px-6 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+                <div className="flex items-center space-x-2">
+                  <Star className="w-5 h-5 text-yellow-400" />
+                  <span className="text-sm font-medium">Make The Animal Proud</span>
+                </div>
+              </div>
+            </motion.div>
+
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              Saving Lives,<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                One Paw at a Time
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Join our mission to rescue and protect animals in need. Together, we can create a world where every animal has a chance at a better life.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link to="/report">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full text-lg font-semibold hover:bg-white/20 transition-all border border-white/20 flex items-center justify-center w-full sm:w-auto"
               >
-                Save Animal
-              </motion.button>
-            </Link>
+                  Report a Case
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </motion.button>
+              </Link>
+            </div>
           </motion.div>
         </div>
+
+        {/* Stats Section */}
+        
       </motion.section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 bg-white">
+      {/* Features Section */}
+      <section id="about" className="py-24 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4">
           <FadeInSection>
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold mb-8">About Our Mission</h2>
-              <p className="text-lg text-gray-600 mb-12">
-                We are dedicated to rescuing and protecting animals in distress. Our network of NGOs and volunteers works tirelessly to ensure every animal gets the care they deserve.
+            <div className="max-w-4xl mx-auto text-center mb-20">
+              <div className="inline-flex items-center justify-center p-2 bg-indigo-50 rounded-full mb-6">
+                <Award className="w-6 h-6 text-indigo-600 mr-2" />
+                <span className="text-indigo-600 font-medium">Our Mission</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">Making a Real Difference</h2>
+              <p className="text-xl text-gray-600 leading-relaxed">
+                We are dedicated to rescuing and protecting animals in distress through our network of trusted NGO partners and volunteers.
               </p>
             </div>
           </FadeInSection>
 
-          <div className="grid md:grid-cols-3 gap-8 mt-12">
-            <FadeInSection>
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Heart className="w-8 h-8 text-indigo-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4">Care & Love</h3>
-                <p className="text-gray-600">Providing compassionate care for every animal we rescue</p>
-              </div>
-            </FadeInSection>
-
-            <FadeInSection>
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <PawPrint className="w-8 h-8 text-indigo-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4">Rescue Operations</h3>
-                <p className="text-gray-600">24/7 emergency response team for animals in need</p>
-              </div>
-            </FadeInSection>
-
-            <FadeInSection>
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MapPin className="w-8 h-8 text-indigo-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4">Local Impact</h3>
-                <p className="text-gray-600">Making a difference in communities across the region</p>
-              </div>
-            </FadeInSection>
+          <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <FeatureCard
+              icon={Heart}
+              title="Compassionate Care"
+              description="Every animal receives dedicated attention and medical care from our experienced team of professionals."
+              delay={0.2}
+            />
+            <FeatureCard
+              icon={Zap}
+              title="Rapid Response"
+              description="Our 24/7 emergency response team ensures quick action when animals are in critical situations."
+              delay={0.4}
+            />
+            <FeatureCard
+              icon={Users}
+              title="Community Impact"
+              description="We work closely with local communities to create lasting positive change for animals in need."
+              delay={0.6}
+            />
           </div>
         </div>
       </section>
 
-      {/* Video Section */}
-      <section className="py-20 bg-gray-50">
+      {/* Success Stories Section */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <FadeInSection>
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold text-center mb-12">See Our Impact</h2>
-              <div className="aspect-w-16 aspect-h-9">
-                <iframe
-                  className="w-full h-[500px] rounded-xl shadow-lg"
-                  src="https://www.youtube.com/embed/i_ctItDqOvQ?si=mPODJ-8qHlh9gbjw"
-                  title="Animal Rescue Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center justify-center p-2 bg-indigo-50 rounded-full mb-6">
+                <Star className="w-6 h-6 text-indigo-600 mr-2" />
+                <span className="text-indigo-600 font-medium">Success Stories</span>
               </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">Transforming Lives</h2>
             </div>
           </FadeInSection>
-        </div>
-      </section>
-
-      {/* Gallery Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <FadeInSection>
-            <h2 className="text-4xl font-bold text-center mb-12">Success Stories</h2>
-          </FadeInSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FadeInSection>
-              <img
-                src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                alt="Rescued Dog"
-                className="w-full h-64 object-cover rounded-lg shadow-lg hover:transform hover:scale-105 transition-transform duration-300"
-              />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <FadeInSection delay={0.2}>
+              <motion.div
+                whileHover={{ y: -10 }}
+                className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100"
+              >
+                <div className="relative">
+                  <img
+                    src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                    alt="Rescued Dog"
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-2xl font-bold text-white mb-2">Max's Journey</h3>
+                    <p className="text-gray-200">From street survivor to loving home</p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <p className="text-gray-600 leading-relaxed">
+                    Max was found injured on the streets. After weeks of care and rehabilitation, he found his forever family.
+                  </p>
+                </div>
+              </motion.div>
             </FadeInSection>
-            <FadeInSection>
-              <img
-                src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                alt="Rescued Cat"
-                className="w-full h-64 object-cover rounded-lg shadow-lg hover:transform hover:scale-105 transition-transform duration-300"
-              />
+
+            <FadeInSection delay={0.4}>
+              <motion.div
+                whileHover={{ y: -10 }}
+                className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100"
+              >
+                <div className="relative">
+                  <img
+                    src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                    alt="Rescued Cat"
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-2xl font-bold text-white mb-2">Luna's Recovery</h3>
+                    <p className="text-gray-200">A tale of resilience and hope</p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <p className="text-gray-600 leading-relaxed">
+                    Luna was rescued from a difficult situation. Today, she brings joy to her new family every single day.
+                  </p>
+                </div>
+              </motion.div>
             </FadeInSection>
-            <FadeInSection>
-              <img
-                src="https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                alt="Happy Animal"
-                className="w-full h-64 object-cover rounded-lg shadow-lg hover:transform hover:scale-105 transition-transform duration-300"
-              />
+
+            <FadeInSection delay={0.6}>
+              <motion.div
+                whileHover={{ y: -10 }}
+                className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100"
+              >
+                <div className="relative">
+                  <img
+                    src="https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                    alt="Happy Animal"
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-2xl font-bold text-white mb-2">Bella's Story</h3>
+                    <p className="text-gray-200">From rescue to forever family</p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <p className="text-gray-600 leading-relaxed">
+                    Bella's transformation from a scared rescue to a confident, happy pet inspires us every day.
+                  </p>
+                </div>
+              </motion.div>
             </FadeInSection>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-50">
+      <section id="contact" className="py-24 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4">
           <FadeInSection>
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold text-center mb-12">Contact Us</h2>
-
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center justify-center p-2 bg-indigo-50 rounded-full mb-6">
+                  <Mail className="w-6 h-6 text-indigo-600 mr-2" />
+                  <span className="text-indigo-600 font-medium">Contact Us</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-8">Get in Touch</h2>
+              </div>
+              
               <div className="grid md:grid-cols-2 gap-12">
-                <div>
-                  <h3 className="text-2xl font-semibold mb-6">Get in Touch</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center">
-                      <Phone className="w-6 h-6 text-indigo-600 mr-4" />
-                      <span>+1 (555) 123-4567</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Mail className="w-6 h-6 text-indigo-600 mr-4" />
-                      <span>contact@animalrescue.org</span>
-                    </div>
-                    <div className="flex items-center">
-                      <MapPin className="w-6 h-6 text-indigo-600 mr-4" />
-                      <span>123 Rescue Street, Animal City, AC 12345</span>
-                    </div>
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    <motion.div
+                      whileHover={{ x: 10 }}
+                      className="flex items-center p-6 bg-white rounded-2xl shadow-lg border border-gray-100"
+                    >
+                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mr-6">
+                        <Phone className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-lg">Emergency Hotline</p>
+                        <p className="text-gray-600">+1 (555) 123-4567</p>
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      whileHover={{ x: 10 }}
+                      className="flex items-center p-6 bg-white rounded-2xl shadow-lg border border-gray-100"
+                    >
+                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mr-6">
+                        <Mail className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-lg">Email Us</p>
+                        <p className="text-gray-600">contact@animalrescue.org</p>
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      whileHover={{ x: 10 }}
+                      className="flex items-center p-6 bg-white rounded-2xl shadow-lg border border-gray-100"
+                    >
+                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mr-6">
+                        <MapPin className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-lg">Location</p>
+                        <p className="text-gray-600">123 Rescue Street, Animal City</p>
+                      </div>
+                    </motion.div>
                   </div>
 
-                  <div className="mt-8">
-                    <h4 className="text-xl font-semibold mb-4">Follow Us</h4>
+                  <div className="pt-8">
+                    <h4 className="text-xl font-semibold mb-6">Connect With Us</h4>
                     <div className="flex space-x-4">
-                      <a href="#" className="text-gray-600 hover:text-indigo-600">
+                      <motion.a
+                        whileHover={{ scale: 1.1, y: -5 }}
+                        href="#"
+                        className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg"
+                      >
                         <Facebook className="w-6 h-6" />
-                      </a>
-                      <a href="#" className="text-gray-600 hover:text-indigo-600">
+                      </motion.a>
+                      <motion.a
+                        whileHover={{ scale: 1.1, y: -5 }}
+                        href="#"
+                        className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg"
+                      >
                         <Twitter className="w-6 h-6" />
-                      </a>
-                      <a href="#" className="text-gray-600 hover:text-indigo-600">
+                      </motion.a>
+                      <motion.a
+                        whileHover={{ scale: 1.1, y: -5 }}
+                        href="#"
+                        className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg"
+                      >
                         <Instagram className="w-6 h-6" />
-                      </a>
+                      </motion.a>
                     </div>
                   </div>
                 </div>
 
-                <div>
+                <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
                   <form className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                       <input
                         type="text"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                         placeholder="Your name"
                       />
                     </div>
@@ -223,7 +359,7 @@ export default function Home() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                       <input
                         type="email"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                         placeholder="your@email.com"
                       />
                     </div>
@@ -231,15 +367,15 @@ export default function Home() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
                       <textarea
                         rows="4"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                         placeholder="Your message"
                       ></textarea>
                     </div>
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       type="submit"
-                      className="w-full bg-black text-white py-3 px-6 rounded-md hover:bg-gray-800 transition-colors"
+                      className="w-full py-4 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-lg hover:shadow-xl font-medium"
                     >
                       Send Message
                     </motion.button>
