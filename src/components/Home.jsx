@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Heart, Phone, Mail, MapPin, PawPrint, Instagram, Facebook, Twitter, ArrowRight, Shield, Users, Clock, ChevronDown, Star, Award, Zap } from 'lucide-react';
+import { Heart, Phone, Mail, MapPin, PawPrint, Instagram, Facebook, Twitter, ArrowRight, Shield, Users, Clock, ChevronDown, Star, Award, Zap, Ban as Bandage } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import hellowVideo from '../fetch/hellow.mp4'
+
 const FadeInSection = ({ children, delay = 0 }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -65,23 +65,12 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="relative min-h-screen flex items-center justify-center text-white overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900 text-white overflow-hidden"
       >
-        <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src={hellowVideo} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        </div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1548681528-6a5c45b66b42?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50"></div>
         
-        <div className="relative z-10 text-center px-4 max-w-6xl mx-auto mt-[-5vh]">
+        <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -97,7 +86,7 @@ export default function Home() {
               <div className="px-6 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
                 <div className="flex items-center space-x-2">
                   <Star className="w-5 h-5 text-yellow-400" />
-                  <span className="text-sm font-medium">Make The Animal Proud</span>
+                  <span className="text-sm font-medium">Make The World Better For Animals</span>
                 </div>
               </div>
             </motion.div>
@@ -111,23 +100,47 @@ export default function Home() {
             <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Join our mission to rescue and protect animals in need. Together, we can create a world where every animal has a chance at a better life.
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/report">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full text-lg font-semibold hover:bg-white/20 transition-all border border-white/20 flex items-center justify-center w-full sm:w-auto"
-              >
-                  Report a Case
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-full text-lg font-semibold hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-lg hover:shadow-xl flex items-center justify-center w-full sm:w-auto group"
+                >
+                  <span>Report a Case</span>
+                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              </Link>
+              <Link to="/first-aid">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full text-lg font-semibold hover:bg-white/20 transition-all border border-white/20 flex items-center justify-center w-full sm:w-auto group"
+                >
+                  <Bandage className="w-5 h-5 mr-2 transform group-hover:rotate-12 transition-transform" />
+                  <span>First Aid Guide</span>
                 </motion.button>
               </Link>
             </div>
           </motion.div>
         </div>
 
-        {/* Stats Section */}
-        
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        >
+          <motion.button
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}
+            className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
+          >
+            <ChevronDown className="w-6 h-6" />
+          </motion.button>
+        </motion.div>
       </motion.section>
 
       {/* Features Section */}
